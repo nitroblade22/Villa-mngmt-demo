@@ -1,0 +1,113 @@
+export default function VillaInventoryDemo() { const villas = [ { name: "Villa 1", status: "Needs Attention", totalCost: "SAR 4,500", rooms: [ { room: "Bedroom", items: [ { name: "Bed", status: "Good", cost: "SAR 0" }, { name: "TV", status: "Replace", cost: "SAR 1,200" }, { name: "AC", status: "Repair", cost: "SAR 800" }, ], }, { room: "Hall", items: [ { name: "Sofa", status: "Replace", cost: "SAR 2,000" }, { name: "Table", status: "Good", cost: "SAR 0" }, ], }, ], }, { name: "Villa 2", status: "Excellent", totalCost: "SAR 0", rooms: [ { room: "Living Room", items: [ { name: "TV", status: "Good", cost: "SAR 0" }, { name: "Curtains", status: "Good", cost: "SAR 0" }, ], }, ], }, ];
+
+const getStatusColor = (status) => { switch (status) { case "Good": return "bg-green-500/20 text-green-300 border-green-500/30"; case "Repair": return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"; case "Replace": return "bg-red-500/20 text-red-300 border-red-500/30"; default: return "bg-gray-500/20 text-gray-300 border-gray-500/30"; } };
+
+return ( <div className="min-h-screen bg-zinc-950 text-white p-6"> <div className="max-w-6xl mx-auto"> <div className="mb-8"> <h1 className="text-4xl font-bold mb-2">Villa Inspection Dashboard</h1> <p className="text-zinc-400 text-lg"> Interactive maintenance and furniture tracking system </p> </div>
+
+<div className="grid md:grid-cols-2 gap-6">
+      {villas.map((villa, index) => (
+        <div
+          key={index}
+          className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl"
+        >
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h2 className="text-2xl font-semibold">{villa.name}</h2>
+              <p className="text-zinc-400">Total Estimated Cost</p>
+            </div>
+
+            <div className="text-right">
+              <div className="text-xl font-bold text-cyan-400">
+                {villa.totalCost}
+              </div>
+              <div className="text-sm text-zinc-500">Maintenance</div>
+            </div>
+          </div>
+
+          <div className="mb-4 inline-flex px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-sm">
+            {villa.status}
+          </div>
+
+          <div className="space-y-5">
+            {villa.rooms.map((room, roomIndex) => (
+              <div
+                key={roomIndex}
+                className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800"
+              >
+                <h3 className="text-lg font-semibold mb-4 text-cyan-300">
+                  {room.room}
+                </h3>
+
+                <div className="space-y-3">
+                  {room.items.map((item, itemIndex) => (
+                    <div
+                      key={itemIndex}
+                      className="flex items-center justify-between bg-zinc-900 rounded-xl p-3"
+                    >
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-sm text-zinc-500">
+                          Estimated Cost: {item.cost}
+                        </div>
+                      </div>
+
+                      <div
+                        className={`px-3 py-1 rounded-full text-sm border ${getStatusColor(
+                          item.status
+                        )}`}
+                      >
+                        {item.status}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 flex gap-3">
+            <button className="flex-1 bg-cyan-500 hover:bg-cyan-400 transition-all text-black font-semibold py-3 rounded-2xl">
+              Open Details
+            </button>
+
+            <button className="px-5 bg-zinc-800 hover:bg-zinc-700 transition-all rounded-2xl">
+              Export
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div className="mt-10 bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+      <h2 className="text-2xl font-bold mb-4">Future Features</h2>
+
+      <div className="grid md:grid-cols-3 gap-4 text-zinc-300">
+        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
+          📷 Upload item photos
+        </div>
+
+        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
+          👨‍🔧 Maintenance tracking
+        </div>
+
+        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
+          📄 PDF reports for management
+        </div>
+
+        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
+          📱 Mobile-friendly dashboard
+        </div>
+
+        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
+          💰 Cost calculation system
+        </div>
+
+        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
+          ☁️ Online cloud database
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+); }
