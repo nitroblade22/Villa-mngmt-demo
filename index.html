@@ -1,1029 +1,1789 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Villa Inspection Dashboard</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #09090b;
-      color: #ffffff;
-      min-height: 100vh;
-    }
-    button,
-    input {
-      font: inherit;
-    }
-    button {
-      cursor: pointer;
-    }
-    /* HEADER */
-    header {
-      border-bottom: 1px solid #27272a;
-      background: #111113;
-      padding: 28px 20px;
-    }
-    .header-content {
-      max-width: 1250px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-    .eyebrow {
-      color: #22d3ee;
-      font-size: 12px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-    h1 {
-      font-size: 34px;
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      color: #a1a1aa;
-      font-size: 15px;
-    }
-    .print-btn {
-      background: #22d3ee;
-      border: none;
-      color: #000;
-      font-weight: bold;
-      padding: 13px 20px;
-      border-radius: 12px;
-      transition: 0.2s;
-    }
-    .print-btn:hover {
-      background: #67e8f9;
-      transform: translateY(-1px);
-    }
-    /* MAIN */
-    main {
-      max-width: 1250px;
-      margin: auto;
-      padding: 30px 20px 60px;
-    }
-    /* STAT CARDS */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villa Management Dashboard</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #17202a;
+}
+
+header {
+    background: #111827;
+    color: white;
+    padding: 24px;
+}
+
+header h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+}
+
+header p {
+    margin: 0;
+    color: #cbd5e1;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+}
+
+.stat h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.stat strong {
+    font-size: 28px;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+    background: white;
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+}
+
+.search {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+button:hover {
+    opacity: .9;
+}
+
+.btn-dark {
+    background: #111827;
+    color: white;
+}
+
+.btn-blue {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-green {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-red {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-orange {
+    background: #ea580c;
+    color: white;
+}
+
+.btn-gray {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+/* =========================
+   VILLA
+========================= */
+
+.villa {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+.villa-header {
+    background: #1e293b;
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.villa-header h2 {
+    margin: 0;
+}
+
+.villa-info {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-top: 5px;
+}
+
+.villa-actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.room {
+    padding: 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.room:last-child {
+    border-bottom: 0;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+
+.room-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* =========================
+   ITEMS
+========================= */
+
+.item {
+    display: grid;
+    grid-template-columns: 1fr 130px 120px auto;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: #fafafa;
+}
+
+.item-name {
+    font-weight: 600;
+}
+
+.cost {
+    font-weight: 600;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.good {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.repair {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.replace {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.pending {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.item-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* =========================
+   EDIT MODE
+========================= */
+
+.edit-box {
+    display: grid;
+    grid-template-columns: 1fr 140px 140px auto;
+    gap: 8px;
+    width: 100%;
+}
+
+.edit-box input,
+.edit-box select {
+    padding: 9px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    padding: 25px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+    text-align: center;
+    padding: 50px;
+    color: #64748b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 1000px) {
     .stats {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-      margin-bottom: 25px;
+        grid-template-columns: repeat(2, 1fr);
     }
-    .stat-card {
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 18px;
-      padding: 20px;
-    }
-    .stat-icon {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-    .stat-label {
-      color: #71717a;
-      font-size: 13px;
-    }
-    .stat-value {
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-    .green {
-      color: #4ade80;
-    }
-    .yellow {
-      color: #facc15;
-    }
-    .red {
-      color: #f87171;
-    }
-    .cyan {
-      color: #22d3ee;
-    }
-    /* SEARCH */
-    .toolbar {
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 18px;
-      padding: 15px;
-      margin-bottom: 25px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .search {
-      flex: 1;
-      min-width: 220px;
-      background: #09090b;
-      color: white;
-      border: 1px solid #3f3f46;
-      border-radius: 11px;
-      padding: 12px 15px;
-      outline: none;
-    }
-    .search:focus {
-      border-color: #22d3ee;
-    }
-    .filter {
-      background: #09090b;
-      color: #d4d4d8;
-      border: 1px solid #3f3f46;
-      border-radius: 11px;
-      padding: 10px 15px;
-      transition: 0.2s;
-    }
-    .filter:hover {
-      border-color: #71717a;
-    }
-    .filter.active {
-      background: #22d3ee;
-      color: #000;
-      border-color: #22d3ee;
-      font-weight: bold;
-    }
-    /* VILLA GRID */
-    .villa-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    .villa-card {
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-    }
-    .villa-header {
-      padding: 23px;
-      border-bottom: 1px solid #27272a;
-    }
-    .villa-title-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-    }
-    .villa-name {
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .villa-type {
-      color: #71717a;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-    .villa-cost-label {
-      color: #71717a;
-      font-size: 11px;
-      text-align: right;
-    }
-    .villa-cost {
-      color: #22d3ee;
-      font-size: 19px;
-      font-weight: bold;
-      margin-top: 3px;
-      text-align: right;
-    }
-    .status-pill {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 6px 11px;
-      border-radius: 20px;
-      font-size: 12px;
-      border: 1px solid;
-    }
-    .status-excellent {
-      color: #4ade80;
-      background: rgba(34,197,94,0.08);
-      border-color: rgba(34,197,94,0.25);
-    }
-    .status-attention {
-      color: #facc15;
-      background: rgba(234,179,8,0.08);
-      border-color: rgba(234,179,8,0.25);
-    }
-    .villa-mini-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 17px;
-    }
-    .mini-stat {
-      background: #09090b;
-      border: 1px solid #27272a;
-      border-radius: 11px;
-      padding: 10px;
-    }
-    .mini-label {
-      color: #71717a;
-      font-size: 11px;
-    }
-    .mini-value {
-      font-weight: bold;
-      margin-top: 4px;
-    }
-    /* ROOMS */
-    .villa-body {
-      padding: 23px;
-    }
-    .room {
-      background: #09090b;
-      border: 1px solid #27272a;
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-    .room-title {
-      color: #67e8f9;
-      font-weight: bold;
-      padding: 13px 15px;
-      border-bottom: 1px solid #27272a;
-    }
+
     .item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 14px 15px;
-      border-bottom: 1px solid #1f1f22;
+        grid-template-columns: 1fr 100px 110px;
     }
-    .item:last-child {
-      border-bottom: none;
+
+    .item-actions {
+        grid-column: 1 / -1;
     }
-    .item-name {
-      font-weight: 500;
+
+    .edit-box {
+        grid-template-columns: 1fr 1fr;
     }
-    .item-cost {
-      color: #71717a;
-      font-size: 12px;
-      margin-top: 4px;
+}
+
+@media(max-width: 600px) {
+    header h1 {
+        font-size: 22px;
     }
-    .item-status {
-      white-space: nowrap;
-      padding: 6px 10px;
-      border-radius: 20px;
-      border: 1px solid;
-      font-size: 11px;
-      font-weight: bold;
+
+    .container {
+        padding: 12px;
     }
-    .item-good {
-      color: #4ade80;
-      background: rgba(34,197,94,0.08);
-      border-color: rgba(34,197,94,0.25);
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
     }
-    .item-repair {
-      color: #facc15;
-      background: rgba(234,179,8,0.08);
-      border-color: rgba(234,179,8,0.25);
+
+    .stat strong {
+        font-size: 22px;
     }
-    .item-replace {
-      color: #f87171;
-      background: rgba(239,68,68,0.08);
-      border-color: rgba(239,68,68,0.25);
-    }
-    /* BUTTONS */
-    .villa-actions {
-      display: flex;
-      gap: 10px;
-      padding: 0 23px 23px;
-    }
-    .details-btn {
-      flex: 1;
-      background: #22d3ee;
-      color: #000;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: bold;
-    }
-    .details-btn:hover {
-      background: #67e8f9;
-    }
-    .export-btn {
-      background: #27272a;
-      color: white;
-      border: 1px solid #3f3f46;
-      padding: 12px 18px;
-      border-radius: 12px;
-    }
-    .export-btn:hover {
-      background: #3f3f46;
-    }
-    /* FEATURES */
-    .features {
-      margin-top: 35px;
-    }
-    .features h2 {
-      margin-bottom: 15px;
-      font-size: 23px;
-    }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 13px;
-    }
-    .feature {
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 16px;
-      padding: 18px;
-    }
-    .feature-icon {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-    .feature-title {
-      font-weight: bold;
-    }
-    .feature-description {
-      color: #71717a;
-      font-size: 13px;
-      margin-top: 5px;
-      line-height: 1.5;
-    }
-    /* MODAL */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(5px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 1000;
-    }
-    .modal.show {
-      display: flex;
-    }
-    .modal-box {
-      background: #18181b;
-      border: 1px solid #3f3f46;
-      border-radius: 22px;
-      max-width: 650px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-    .modal-header {
-      padding: 22px;
-      border-bottom: 1px solid #27272a;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .close-btn {
-      width: 38px;
-      height: 38px;
-      border: none;
-      border-radius: 50%;
-      background: #27272a;
-      color: white;
-      font-size: 18px;
-    }
-    .close-btn:hover {
-      background: #3f3f46;
-    }
-    .modal-body {
-      padding: 22px;
-    }
-    .modal-room {
-      margin-bottom: 20px;
-    }
-    .modal-room h3 {
-      color: #67e8f9;
-      margin-bottom: 8px;
-    }
-    .modal-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 11px;
-      background: #09090b;
-      border-radius: 10px;
-      margin-bottom: 5px;
-    }
-    /* EMPTY */
-    .empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px;
-      color: #71717a;
-      background: #18181b;
-      border-radius: 20px;
-      border: 1px solid #27272a;
-    }
-    /* RESPONSIVE */
-    @media (max-width: 950px) {
-      .stats {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .villa-grid {
-        grid-template-columns: 1fr;
-      }
-      .feature-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (max-width: 650px) {
-      header {
-        padding: 22px 15px;
-      }
-      main {
-        padding: 22px 15px 40px;
-      }
-      .header-content {
+
+    .villa-header {
         flex-direction: column;
         align-items: flex-start;
-      }
-      h1 {
-        font-size: 28px;
-      }
-      .print-btn {
-        width: 100%;
-      }
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-      .villa-title-row {
+    }
+
+    .room-header {
         flex-direction: column;
-      }
-      .villa-cost,
-      .villa-cost-label {
-        text-align: left;
-      }
-      .item {
         align-items: flex-start;
-      }
     }
-    /* PRINT */
-    @media print {
-      body {
-        background: white;
-        color: black;
-      }
-      header {
-        background: white;
-        color: black;
-      }
-      .toolbar,
-      .villa-actions,
-      .features,
-      .print-btn {
-        display: none;
-      }
-      .villa-grid {
+
+    .item {
         grid-template-columns: 1fr;
-      }
-      .villa-card,
-      .stat-card,
-      .room {
-        box-shadow: none;
-      }
     }
-  </style>
+
+    .edit-box {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
+
 <body>
+
 <header>
-  <div class="header-content">
-    <div>
-      <div class="eyebrow">Property Management</div>
-      <h1>Villa Inspection Dashboard</h1>
-      <p class="subtitle">
-        Furniture, maintenance and cost tracking system
-      </p>
-    </div>
-    <button class="print-btn" onclick="window.print()">
-      🖨 Print Report
-    </button>
-  </div>
+    <h1>🏠 Villa Management Dashboard</h1>
+    <p>Manage villas, rooms, inventory, status and estimated replacement costs.</p>
 </header>
-<main>
-  <!-- STATISTICS -->
-  <section class="stats">
-    <div class="stat-card">
-      <div class="stat-icon">🏠</div>
-      <div class="stat-label">Total Villas</div>
-      <div class="stat-value" id="totalVillas">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📦</div>
-      <div class="stat-label">Total Items</div>
-      <div class="stat-value" id="totalItems">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">✓</div>
-      <div class="stat-label">Good</div>
-      <div class="stat-value green" id="goodItems">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">🔧</div>
-      <div class="stat-label">Needs Repair</div>
-      <div class="stat-value yellow" id="repairItems">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-label">Estimated Cost</div>
-      <div class="stat-value cyan" id="totalCost">SAR 0</div>
-    </div>
-  </section>
-  <!-- SEARCH AND FILTER -->
-  <section class="toolbar">
-    <input
-      id="search"
-      class="search"
-      type="text"
-      placeholder="🔎 Search villa or location..."
-      oninput="renderVillas()"
-    />
-    <button class="filter active" onclick="setFilter('All', this)">
-      All
-    </button>
-    <button class="filter" onclick="setFilter('Good', this)">
-      ✓ Good
-    </button>
-    <button class="filter" onclick="setFilter('Repair', this)">
-      🔧 Repair
-    </button>
-    <button class="filter" onclick="setFilter('Replace', this)">
-      ⚠ Replace
-    </button>
-  </section>
-  <!-- VILLAS -->
-  <section id="villaGrid" class="villa-grid"></section>
-  <!-- FEATURES -->
-  <section class="features">
-    <h2>System Features</h2>
-    <div class="feature-grid">
-      <div class="feature">
-        <div class="feature-icon">📷</div>
-        <div class="feature-title">Item Photos</div>
-        <div class="feature-description">
-          Upload and manage photos of furniture and equipment.
+
+<div class="container">
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>Total Villas</h3>
+            <strong id="totalVillas">0</strong>
         </div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🔧</div>
-        <div class="feature-title">Maintenance</div>
-        <div class="feature-description">
-          Track repairs, replacements and maintenance work.
+
+        <div class="stat">
+            <h3>Total Items</h3>
+            <strong id="totalItems">0</strong>
         </div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📄</div>
-        <div class="feature-title">PDF Reports</div>
-        <div class="feature-description">
-          Generate professional reports for management.
+
+        <div class="stat">
+            <h3>Good</h3>
+            <strong id="goodItems">0</strong>
         </div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📱</div>
-        <div class="feature-title">Mobile Friendly</div>
-        <div class="feature-description">
-          Designed to work on phones, tablets and computers.
+
+        <div class="stat">
+            <h3>Repair</h3>
+            <strong id="repairItems">0</strong>
         </div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">💰</div>
-        <div class="feature-title">Cost Tracking</div>
-        <div class="feature-description">
-          Automatically calculate estimated maintenance costs.
+
+        <div class="stat">
+            <h3>Estimated Cost</h3>
+            <strong id="totalCost">SAR 0</strong>
         </div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">☁️</div>
-        <div class="feature-title">Cloud Database</div>
-        <div class="feature-description">
-          Ready for future online database integration.
-        </div>
-      </div>
+
     </div>
-  </section>
-</main>
-<!-- DETAILS MODAL -->
-<div id="modal" class="modal" onclick="closeModal(event)">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div>
-        <h2 id="modalTitle"></h2>
-        <p id="modalSubtitle" class="subtitle"></p>
-      </div>
-      <button class="close-btn" onclick="hideModal()">
-        ✕
-      </button>
+
+    <!-- CONTROLS -->
+
+    <div class="controls">
+
+        <input
+            id="search"
+            class="search"
+            type="text"
+            placeholder="🔍 Search villa, room or item..."
+            oninput="render()"
+        >
+
+        <div class="buttons">
+
+            <button class="btn-dark" onclick="showAll()">
+                All
+            </button>
+
+            <button class="btn-green" onclick="filterStatus('Good')">
+                Good
+            </button>
+
+            <button class="btn-orange" onclick="filterStatus('Repair')">
+                Repair
+            </button>
+
+            <button class="btn-red" onclick="filterStatus('Replace')">
+                Replace
+            </button>
+
+            <button class="btn-blue" onclick="filterStatus('Pending')">
+                Pending
+            </button>
+
+            <button class="btn-blue" onclick="addVilla()">
+                + Add Villa
+            </button>
+
+            <button class="btn-green" onclick="saveData()">
+                💾 Save Changes
+            </button>
+
+            <button class="btn-gray" onclick="backupData()">
+                📥 Backup
+            </button>
+
+            <button class="btn-gray" onclick="restoreData()">
+                📤 Restore
+            </button>
+
+        </div>
+
     </div>
-    <div id="modalBody" class="modal-body"></div>
-  </div>
+
+    <div id="villaContainer"></div>
+
 </div>
+
+
+<!-- DETAILS MODAL -->
+
+<div id="modal" class="modal" onclick="closeModal(event)">
+
+    <div class="modal-content">
+
+        <h2 id="modalTitle"></h2>
+
+        <div id="modalBody"></div>
+
+        <br>
+
+        <button class="btn-gray" onclick="hideModal()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+
 <script>
-  /* ============================
-     VILLA DATA
-  ============================ */
-  const villas = [
+
+/* =========================================================
+   DEFAULT DATA
+========================================================= */
+
+const defaultVillas = [
+
     {
-      id: 1,
-      name: "Villa 1",
-      type: "Executive Villa",
-      rooms: [
-        {
-          name: "Bedroom",
-          items: [
+        id: "villa-1",
+        name: "Villa 1",
+        type: "Deluxe Villa",
+
+        rooms: [
+
             {
-              name: "Bed",
-              status: "Good",
-              cost: 0
+                id: "room-1",
+                name: "Living Room",
+
+                items: [
+
+                    {
+                        id: "item-1",
+                        name: "Sofa",
+                        cost: 1500,
+                        status: "Good"
+                    },
+
+                    {
+                        id: "item-2",
+                        name: "Coffee Table",
+                        cost: 500,
+                        status: "Good"
+                    },
+
+                    {
+                        id: "item-3",
+                        name: "TV",
+                        cost: 2200,
+                        status: "Repair"
+                    }
+
+                ]
             },
+
             {
-              name: "TV",
-              status: "Replace",
-              cost: 1200
-            },
-            {
-              name: "AC",
-              status: "Repair",
-              cost: 800
+                id: "room-2",
+                name: "Bedroom 1",
+
+                items: [
+
+                    {
+                        id: "item-4",
+                        name: "Bed",
+                        cost: 1800,
+                        status: "Good"
+                    },
+
+                    {
+                        id: "item-5",
+                        name: "Wardrobe",
+                        cost: 1200,
+                        status: "Replace"
+                    }
+
+                ]
             }
-          ]
-        },
-        {
-          name: "Hall",
-          items: [
-            {
-              name: "Sofa",
-              status: "Replace",
-              cost: 2000
-            },
-            {
-              name: "Table",
-              status: "Good",
-              cost: 0
-            }
-          ]
-        }
-      ]
+
+        ]
     },
+
     {
-      id: 2,
-      name: "Villa 2",
-      type: "Junior Villa",
-      rooms: [
-        {
-          name: "Living Room",
-          items: [
+        id: "villa-2",
+        name: "Villa 2",
+        type: "Junior Villa",
+
+        rooms: [
+
             {
-              name: "TV",
-              status: "Good",
-              cost: 0
+                id: "room-3",
+                name: "Living Room",
+
+                items: [
+
+                    {
+                        id: "item-6",
+                        name: "Sofa",
+                        cost: 1500,
+                        status: "Good"
+                    },
+
+                    {
+                        id: "item-7",
+                        name: "TV",
+                        cost: 2200,
+                        status: "Pending"
+                    }
+
+                ]
             },
+
             {
-              name: "Curtains",
-              status: "Good",
-              cost: 0
+                id: "room-4",
+                name: "Bedroom",
+
+                items: [
+
+                    {
+                        id: "item-8",
+                        name: "Bed",
+                        cost: 1800,
+                        status: "Good"
+                    }
+
+                ]
             }
-          ]
-        }
-      ]
+
+        ]
     }
-  ];
-  let currentFilter = "All";
-  /* ============================
-     HELPERS
-  ============================ */
-  function formatSAR(number) {
-    return "SAR " + number.toLocaleString("en-US");
-  }
-  function getItems(villa) {
-    return villa.rooms.flatMap(room => room.items);
-  }
-  function getStats(villa) {
-    const items = getItems(villa);
-    return {
-      total: items.length,
-      good: items.filter(item => item.status === "Good").length,
-      repair: items.filter(item => item.status === "Repair").length,
-      replace: items.filter(item => item.status === "Replace").length,
-      cost: items.reduce(
-        (total, item) => total + item.cost,
-        0
-      )
-    };
-  }
-  function getStatusClass(status) {
-    if (status === "Good") {
-      return "item-good";
-    }
-    if (status === "Repair") {
-      return "item-repair";
-    }
-    if (status === "Replace") {
-      return "item-replace";
-    }
-    return "";
-  }
-  /* ============================
-     DASHBOARD STATISTICS
-  ============================ */
-  function updateDashboardStats() {
-    let totalItems = 0;
-    let good = 0;
-    let repair = 0;
-    let replace = 0;
-    let cost = 0;
-    villas.forEach(villa => {
-      const stats = getStats(villa);
-      totalItems += stats.total;
-      good += stats.good;
-      repair += stats.repair;
-      replace += stats.replace;
-      cost += stats.cost;
+
+];
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+let villas =
+    JSON.parse(localStorage.getItem("villaData")) ||
+    structuredClone(defaultVillas);
+
+let currentFilter = "All";
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function money(value) {
+
+    return "SAR " + Number(value || 0).toLocaleString();
+
+}
+
+
+function generateId(prefix) {
+
+    return prefix + "-" + Date.now() + "-" +
+        Math.random().toString(36).substring(2, 8);
+
+}
+
+
+function allItems(villa) {
+
+    let items = [];
+
+    villa.rooms.forEach(room => {
+
+        room.items.forEach(item => {
+
+            items.push(item);
+
+        });
+
     });
+
+    return items;
+
+}
+
+
+function getStats() {
+
+    let items = [];
+
+    villas.forEach(villa => {
+
+        items = items.concat(allItems(villa));
+
+    });
+
+    return {
+
+        totalItems: items.length,
+
+        good: items.filter(x => x.status === "Good").length,
+
+        repair: items.filter(x => x.status === "Repair").length,
+
+        replace: items.filter(x => x.status === "Replace").length,
+
+        pending: items.filter(x => x.status === "Pending").length,
+
+        cost: items.reduce(
+            (sum, item) => sum + Number(item.cost || 0),
+            0
+        )
+
+    };
+
+}
+
+
+function statusClass(status) {
+
+    return status.toLowerCase();
+
+}
+
+
+/* =========================================================
+   UPDATE STATS
+========================================================= */
+
+function updateStats() {
+
+    const stats = getStats();
+
     document.getElementById("totalVillas").textContent =
-      villas.length;
+        villas.length;
+
     document.getElementById("totalItems").textContent =
-      totalItems;
+        stats.totalItems;
+
     document.getElementById("goodItems").textContent =
-      good;
+        stats.good;
+
     document.getElementById("repairItems").textContent =
-      repair;
+        stats.repair;
+
     document.getElementById("totalCost").textContent =
-      formatSAR(cost);
-  }
-  /* ============================
-     FILTER
-  ============================ */
-  function setFilter(filter, button) {
-    currentFilter = filter;
-    document
-      .querySelectorAll(".filter")
-      .forEach(btn => btn.classList.remove("active"));
-    button.classList.add("active");
-    renderVillas();
-  }
-  /* ============================
-     RENDER VILLAS
-  ============================ */
-  function renderVillas() {
-    const grid = document.getElementById("villaGrid");
-    const searchValue =
-      document
-        .getElementById("search")
+        money(stats.cost);
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+    updateStats();
+
+    const container =
+        document.getElementById("villaContainer");
+
+    const search =
+        document.getElementById("search")
         .value
         .toLowerCase()
         .trim();
-    const filtered = villas.filter(villa => {
-      const stats = getStats(villa);
-      const searchMatch =
-        villa.name.toLowerCase().includes(searchValue) ||
-        villa.type.toLowerCase().includes(searchValue);
-      let filterMatch = true;
-      if (currentFilter === "Good") {
-        filterMatch = stats.good > 0;
-      }
-      if (currentFilter === "Repair") {
-        filterMatch = stats.repair > 0;
-      }
-      if (currentFilter === "Replace") {
-        filterMatch = stats.replace > 0;
-      }
-      return searchMatch && filterMatch;
+
+    container.innerHTML = "";
+
+    let visibleVillas = 0;
+
+    villas.forEach(villa => {
+
+        let villaMatches =
+            villa.name.toLowerCase().includes(search) ||
+            villa.type.toLowerCase().includes(search);
+
+        let villaHTML = "";
+
+        villa.rooms.forEach(room => {
+
+            let roomMatches =
+                room.name.toLowerCase().includes(search);
+
+            let visibleItems = room.items.filter(item => {
+
+                const searchMatch =
+                    !search ||
+                    villaMatches ||
+                    roomMatches ||
+                    item.name.toLowerCase().includes(search);
+
+                const statusMatch =
+                    currentFilter === "All" ||
+                    item.status === currentFilter;
+
+                return searchMatch && statusMatch;
+
+            });
+
+            if (visibleItems.length === 0) {
+                return;
+            }
+
+            villaHTML += `
+
+                <div class="room">
+
+                    <div class="room-header">
+
+                        <h3>
+                            🛏️ ${escapeHTML(room.name)}
+                        </h3>
+
+                        <div>
+
+                            <button
+                                class="btn-blue"
+                                onclick="addItem('${villa.id}','${room.id}')"
+                            >
+                                + Add Item
+                            </button>
+
+                            <button
+                                class="btn-red"
+                                onclick="deleteRoom('${villa.id}','${room.id}')"
+                            >
+                                Delete Room
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    ${visibleItems.map(item =>
+
+                        itemHTML(
+                            villa,
+                            room,
+                            item
+                        )
+
+                    ).join("")}
+
+                </div>
+
+            `;
+
+        });
+
+
+        if (villaHTML) {
+
+            visibleVillas++;
+
+            container.innerHTML += `
+
+                <div class="villa">
+
+                    <div class="villa-header">
+
+                        <div>
+
+                            <h2>
+                                🏠 ${escapeHTML(villa.name)}
+                            </h2>
+
+                            <div class="villa-info">
+                                ${escapeHTML(villa.type)}
+                            </div>
+
+                        </div>
+
+                        <div class="villa-actions">
+
+                            <button
+                                class="btn-blue"
+                                onclick="showDetails('${villa.id}')"
+                            >
+                                Details
+                            </button>
+
+                            <button
+                                class="btn-green"
+                                onclick="addRoom('${villa.id}')"
+                            >
+                                + Room
+                            </button>
+
+                            <button
+                                class="btn-gray"
+                                onclick="exportVilla('${villa.id}')"
+                            >
+                                Export
+                            </button>
+
+                            <button
+                                class="btn-red"
+                                onclick="deleteVilla('${villa.id}')"
+                            >
+                                Delete Villa
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    ${villaHTML}
+
+                </div>
+
+            `;
+
+        }
+
     });
-    if (filtered.length === 0) {
-      grid.innerHTML = `
-        <div class="empty">
-          <div style="font-size:35px;margin-bottom:10px;">🔎</div>
-          <strong>No villas found</strong>
-          <p style="margin-top:7px;">
-            Try another search or filter.
-          </p>
+
+
+    if (visibleVillas === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <h2>No results found</h2>
+
+                <p>
+                    Try another search or filter.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   ITEM HTML
+========================================================= */
+
+function itemHTML(villa, room, item) {
+
+    return `
+
+        <div
+            class="item"
+            id="item-${item.id}"
+            data-item-id="${item.id}"
+        >
+
+            <div class="item-name">
+
+                ${escapeHTML(item.name)}
+
+            </div>
+
+            <div class="cost">
+
+                ${money(item.cost)}
+
+            </div>
+
+            <div>
+
+                <span class="badge ${statusClass(item.status)}">
+
+                    ${escapeHTML(item.status)}
+
+                </span>
+
+            </div>
+
+            <div class="item-actions">
+
+                <button
+                    class="btn-blue"
+                    onclick="editItem(
+                        '${villa.id}',
+                        '${room.id}',
+                        '${item.id}'
+                    )"
+                >
+                    Edit
+                </button>
+
+                <button
+                    class="btn-red"
+                    onclick="deleteItem(
+                        '${villa.id}',
+                        '${room.id}',
+                        '${item.id}'
+                    )"
+                >
+                    Delete
+                </button>
+
+            </div>
+
         </div>
-      `;
-      return;
-    }
-    grid.innerHTML = filtered.map(villa => {
-      const stats = getStats(villa);
-      const needsAttention =
-        stats.repair > 0 ||
-        stats.replace > 0;
-      const roomsHTML = villa.rooms.map(room => {
-        const itemsHTML = room.items.map(item => {
-          return `
-            <div class="item">
-              <div>
-                <div class="item-name">
-                  ${item.name}
-                </div>
-                <div class="item-cost">
-                  Estimated Cost: ${formatSAR(item.cost)}
-                </div>
-              </div>
-              <span class="item-status ${getStatusClass(item.status)}">
-                ${item.status}
-              </span>
-            </div>
-          `;
-        }).join("");
-        return `
-          <div class="room">
-            <div class="room-title">
-              ${room.name}
-            </div>
-            ${itemsHTML}
-          </div>
-        `;
-      }).join("");
-      return `
-        <article class="villa-card">
-          <div class="villa-header">
-            <div class="villa-title-row">
-              <div>
-                <div class="villa-name">
-                  ${villa.name}
-                </div>
-                <div class="villa-type">
-                  ${villa.type}
-                </div>
-              </div>
-              <div>
-                <div class="villa-cost-label">
-                  ESTIMATED COST
-                </div>
-                <div class="villa-cost">
-                  ${formatSAR(stats.cost)}
-                </div>
-              </div>
-            </div>
-            <span class="status-pill ${
-              needsAttention
-                ? "status-attention"
-                : "status-excellent"
-            }">
-              ${
-                needsAttention
-                  ? "Needs Attention"
-                  : "Excellent"
-              }
-            </span>
-            <div class="villa-mini-stats">
-              <div class="mini-stat">
-                <div class="mini-label">
-                  ITEMS
-                </div>
-                <div class="mini-value">
-                  ${stats.total}
-                </div>
-              </div>
-              <div class="mini-stat">
-                <div class="mini-label">
-                  REPAIR
-                </div>
-                <div class="mini-value yellow">
-                  ${stats.repair}
-                </div>
-              </div>
-              <div class="mini-stat">
-                <div class="mini-label">
-                  REPLACE
-                </div>
-                <div class="mini-value red">
-                  ${stats.replace}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="villa-body">
-            ${roomsHTML}
-          </div>
-          <div class="villa-actions">
-            <button
-              class="details-btn"
-              onclick="showDetails(${villa.id})"
-            >
-              Open Details
-            </button>
-            <button
-              class="export-btn"
-              onclick="exportVilla(${villa.id})"
-            >
-              Export
-            </button>
-          </div>
-        </article>
-      `;
-    }).join("");
-  }
-  /* ============================
-     DETAILS MODAL
-  ============================ */
-  function showDetails(id) {
+
+    `;
+
+}
+
+
+/* =========================================================
+   EDIT ITEM
+========================================================= */
+
+function editItem(villaId, roomId, itemId) {
+
     const villa =
-      villas.find(villa => villa.id === id);
+        villas.find(v => v.id === villaId);
+
     if (!villa) return;
-    const stats = getStats(villa);
-    document.getElementById("modalTitle").textContent =
-      villa.name;
-    document.getElementById("modalSubtitle").textContent =
-      `${villa.type} • ${formatSAR(stats.cost)} estimated cost`;
-    document.getElementById("modalBody").innerHTML =
-      villa.rooms.map(room => {
-        return `
-          <div class="modal-room">
-            <h3>
-              ${room.name}
-            </h3>
-            ${room.items.map(item => {
-              return `
-                <div class="modal-item">
-                  <span>
-                    ${item.name}
-                  </span>
-                  <span class="${getStatusClass(item.status)}"
-                        style="padding:5px 9px;border-radius:15px;font-size:11px;">
-                    ${item.status}
-                  </span>
-                </div>
-              `;
-            }).join("")}
-          </div>
-        `;
-      }).join("");
-    document
-      .getElementById("modal")
-      .classList.add("show");
-  }
-  function hideModal() {
-    document
-      .getElementById("modal")
-      .classList.remove("show");
-  }
-  function closeModal(event) {
-    if (event.target.id === "modal") {
-      hideModal();
-    }
-  }
-  /* ============================
-     EXPORT
-  ============================ */
-  function exportVilla(id) {
+
+    const room =
+        villa.rooms.find(r => r.id === roomId);
+
+    if (!room) return;
+
+    const item =
+        room.items.find(i => i.id === itemId);
+
+    if (!item) return;
+
+    const element =
+        document.getElementById("item-" + itemId);
+
+    if (!element) return;
+
+    element.innerHTML = `
+
+        <div class="edit-box">
+
+            <input
+                id="name-${itemId}"
+                value="${escapeAttribute(item.name)}"
+                placeholder="Item name"
+            >
+
+            <input
+                id="cost-${itemId}"
+                type="number"
+                min="0"
+                value="${Number(item.cost || 0)}"
+                placeholder="Cost"
+            >
+
+            <select id="status-${itemId}">
+
+                <option
+                    value="Good"
+                    ${item.status === "Good" ? "selected" : ""}
+                >
+                    Good
+                </option>
+
+                <option
+                    value="Repair"
+                    ${item.status === "Repair" ? "selected" : ""}
+                >
+                    Repair
+                </option>
+
+                <option
+                    value="Replace"
+                    ${item.status === "Replace" ? "selected" : ""}
+                >
+                    Replace
+                </option>
+
+                <option
+                    value="Pending"
+                    ${item.status === "Pending" ? "selected" : ""}
+                >
+                    Pending
+                </option>
+
+            </select>
+
+            <div>
+
+                <button
+                    class="btn-green"
+                    onclick="saveItem(
+                        '${villaId}',
+                        '${roomId}',
+                        '${itemId}'
+                    )"
+                >
+                    Save
+                </button>
+
+                <button
+                    class="btn-gray"
+                    onclick="render()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SAVE ITEM
+========================================================= */
+
+function saveItem(villaId, roomId, itemId) {
+
     const villa =
-      villas.find(villa => villa.id === id);
+        villas.find(v => v.id === villaId);
+
     if (!villa) return;
-    const stats = getStats(villa);
-    let report =
-      `${villa.name} - Villa Inspection Report\n`;
-    report +=
-      `====================================\n\n`;
-    report +=
-      `Type: ${villa.type}\n`;
-    report +=
-      `Total Items: ${stats.total}\n`;
-    report +=
-      `Good: ${stats.good}\n`;
-    report +=
-      `Repair: ${stats.repair}\n`;
-    report +=
-      `Replace: ${stats.replace}\n`;
-    report +=
-      `Estimated Cost: ${formatSAR(stats.cost)}\n\n`;
-    villa.rooms.forEach(room => {
-      report +=
-        `--- ${room.name} ---\n`;
-      room.items.forEach(item => {
-        report +=
-          `${item.name}: ${item.status} | ${formatSAR(item.cost)}\n`;
-      });
-      report += "\n";
+
+    const room =
+        villa.rooms.find(r => r.id === roomId);
+
+    if (!room) return;
+
+    const item =
+        room.items.find(i => i.id === itemId);
+
+    if (!item) return;
+
+    const name =
+        document.getElementById("name-" + itemId).value.trim();
+
+    const cost =
+        Number(
+            document.getElementById("cost-" + itemId).value
+        );
+
+    const status =
+        document.getElementById("status-" + itemId).value;
+
+    if (!name) {
+
+        alert("Please enter an item name.");
+
+        return;
+
+    }
+
+    item.name = name;
+
+    item.cost = cost || 0;
+
+    item.status = status;
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   ADD ITEM
+========================================================= */
+
+function addItem(villaId, roomId) {
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    const room =
+        villa.rooms.find(r => r.id === roomId);
+
+    if (!room) return;
+
+    const name =
+        prompt("Enter item name:");
+
+    if (!name || !name.trim()) {
+        return;
+    }
+
+    const cost =
+        prompt("Enter estimated cost in SAR:", "0");
+
+    const status =
+        prompt(
+            "Enter status: Good, Repair, Replace or Pending",
+            "Good"
+        );
+
+    const validStatuses =
+        ["Good", "Repair", "Replace", "Pending"];
+
+    let finalStatus =
+        validStatuses.includes(status)
+            ? status
+            : "Good";
+
+    room.items.push({
+
+        id: generateId("item"),
+
+        name: name.trim(),
+
+        cost: Number(cost) || 0,
+
+        status: finalStatus
+
     });
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   DELETE ITEM
+========================================================= */
+
+function deleteItem(villaId, roomId, itemId) {
+
+    if (!confirm("Delete this item?")) {
+        return;
+    }
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    const room =
+        villa.rooms.find(r => r.id === roomId);
+
+    if (!room) return;
+
+    room.items =
+        room.items.filter(
+            item => item.id !== itemId
+        );
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   ADD ROOM
+========================================================= */
+
+function addRoom(villaId) {
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    const name =
+        prompt("Enter room name:");
+
+    if (!name || !name.trim()) {
+        return;
+    }
+
+    villa.rooms.push({
+
+        id: generateId("room"),
+
+        name: name.trim(),
+
+        items: []
+
+    });
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   DELETE ROOM
+========================================================= */
+
+function deleteRoom(villaId, roomId) {
+
+    if (!confirm(
+        "Delete this room and all its items?"
+    )) {
+        return;
+    }
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    villa.rooms =
+        villa.rooms.filter(
+            room => room.id !== roomId
+        );
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   ADD VILLA
+========================================================= */
+
+function addVilla() {
+
+    const name =
+        prompt(
+            "Enter villa name:",
+            "Villa " + (villas.length + 1)
+        );
+
+    if (!name || !name.trim()) {
+        return;
+    }
+
+    const type =
+        prompt(
+            "Enter villa type:",
+            "Deluxe Villa"
+        );
+
+    villas.push({
+
+        id: generateId("villa"),
+
+        name: name.trim(),
+
+        type: type && type.trim()
+            ? type.trim()
+            : "Villa",
+
+        rooms: [
+
+            {
+
+                id: generateId("room"),
+
+                name: "Living Room",
+
+                items: []
+
+            }
+
+        ]
+
+    });
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   DELETE VILLA
+========================================================= */
+
+function deleteVilla(villaId) {
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    if (!confirm(
+        "Delete " +
+        villa.name +
+        " and ALL rooms/items inside it?"
+    )) {
+
+        return;
+
+    }
+
+    villas =
+        villas.filter(
+            villa => villa.id !== villaId
+        );
+
+    saveData(false);
+
+    render();
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterStatus(status) {
+
+    currentFilter = status;
+
+    render();
+
+}
+
+
+function showAll() {
+
+    currentFilter = "All";
+
+    render();
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveData(showMessage = true) {
+
+    localStorage.setItem(
+        "villaData",
+        JSON.stringify(villas)
+    );
+
+    if (showMessage) {
+
+        alert(
+            "Changes saved successfully on this device."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BACKUP DATA
+========================================================= */
+
+function backupData() {
+
+    const data =
+        JSON.stringify(villas, null, 2);
+
     const blob =
-      new Blob([report], {
-        type: "text/plain"
-      });
+        new Blob(
+            [data],
+            {
+                type: "application/json"
+            }
+        );
+
     const url =
-      URL.createObjectURL(blob);
-    const link =
-      document.createElement("a");
-    link.href = url;
-    link.download =
-      `${villa.name.replaceAll(" ", "_")}_Report.txt`;
-    link.click();
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "villa-management-backup.json";
+
+    a.click();
+
     URL.revokeObjectURL(url);
-  }
-  /* ============================
-     START
-  ============================ */
-  updateDashboardStats();
-  renderVillas();
+
+}
+
+
+/* =========================================================
+   RESTORE DATA
+========================================================= */
+
+function restoreData() {
+
+    const input =
+        document.createElement("input");
+
+    input.type = "file";
+
+    input.accept = ".json";
+
+    input.onchange = function(event) {
+
+        const file =
+            event.target.files[0];
+
+        if (!file) return;
+
+        const reader =
+            new FileReader();
+
+        reader.onload = function(e) {
+
+            try {
+
+                const imported =
+                    JSON.parse(e.target.result);
+
+                if (!Array.isArray(imported)) {
+
+                    throw new Error();
+
+                }
+
+                villas = imported;
+
+                saveData(false);
+
+                render();
+
+                alert(
+                    "Backup restored successfully."
+                );
+
+            }
+
+            catch {
+
+                alert(
+                    "Invalid backup file."
+                );
+
+            }
+
+        };
+
+        reader.readAsText(file);
+
+    };
+
+    input.click();
+
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+function showDetails(villaId) {
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    const items =
+        allItems(villa);
+
+    const totalCost =
+        items.reduce(
+            (sum, item) =>
+                sum + Number(item.cost || 0),
+            0
+        );
+
+    document.getElementById("modalTitle")
+        .textContent =
+        villa.name;
+
+    document.getElementById("modalBody")
+        .innerHTML = `
+
+            <p>
+                <strong>Type:</strong>
+                ${escapeHTML(villa.type)}
+            </p>
+
+            <p>
+                <strong>Rooms:</strong>
+                ${villa.rooms.length}
+            </p>
+
+            <p>
+                <strong>Total Items:</strong>
+                ${items.length}
+            </p>
+
+            <p>
+                <strong>Estimated Cost:</strong>
+                ${money(totalCost)}
+            </p>
+
+            <hr>
+
+            ${villa.rooms.map(room => `
+
+                <h3>
+                    ${escapeHTML(room.name)}
+                </h3>
+
+                <ul>
+
+                    ${room.items.map(item => `
+
+                        <li>
+                            ${escapeHTML(item.name)}
+                            —
+                            ${money(item.cost)}
+                            —
+                            <strong>
+                                ${escapeHTML(item.status)}
+                            </strong>
+                        </li>
+
+                    `).join("")}
+
+                </ul>
+
+            `).join("")}
+
+        `;
+
+    document.getElementById("modal")
+        .style.display = "flex";
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function hideModal() {
+
+    document.getElementById("modal")
+        .style.display = "none";
+
+}
+
+
+function closeModal(event) {
+
+    if (event.target.id === "modal") {
+
+        hideModal();
+
+    }
+
+}
+
+
+/* =========================================================
+   EXPORT VILLA
+========================================================= */
+
+function exportVilla(villaId) {
+
+    const villa =
+        villas.find(v => v.id === villaId);
+
+    if (!villa) return;
+
+    let report = "";
+
+    report +=
+        "VILLA MANAGEMENT REPORT\n";
+
+    report +=
+        "========================\n\n";
+
+    report +=
+        "Villa: " +
+        villa.name +
+        "\n";
+
+    report +=
+        "Type: " +
+        villa.type +
+        "\n\n";
+
+    villa.rooms.forEach(room => {
+
+        report +=
+            "\nROOM: " +
+            room.name +
+            "\n";
+
+        report +=
+            "------------------------\n";
+
+        room.items.forEach(item => {
+
+            report +=
+                item.name +
+                " | " +
+                item.status +
+                " | " +
+                money(item.cost) +
+                "\n";
+
+        });
+
+    });
+
+    const items =
+        allItems(villa);
+
+    const total =
+        items.reduce(
+            (sum, item) =>
+                sum + Number(item.cost || 0),
+            0
+        );
+
+    report +=
+        "\nTOTAL ESTIMATED COST: " +
+        money(total) +
+        "\n";
+
+    const blob =
+        new Blob(
+            [report],
+            {
+                type: "text/plain"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        villa.name.replace(/\s+/g, "-") +
+        "-report.txt";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   SECURITY / HTML HELPERS
+========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function escapeAttribute(value) {
+
+    return escapeHTML(value);
+
+}
+
+
+/* =========================================================
+   START APP
+========================================================= */
+
+render();
+
 </script>
+
 </body>
 </html>
