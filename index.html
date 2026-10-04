@@ -1,113 +1,1029 @@
-export default function VillaInventoryDemo() { const villas = [ { name: "Villa 1", status: "Needs Attention", totalCost: "SAR 4,500", rooms: [ { room: "Bedroom", items: [ { name: "Bed", status: "Good", cost: "SAR 0" }, { name: "TV", status: "Replace", cost: "SAR 1,200" }, { name: "AC", status: "Repair", cost: "SAR 800" }, ], }, { room: "Hall", items: [ { name: "Sofa", status: "Replace", cost: "SAR 2,000" }, { name: "Table", status: "Good", cost: "SAR 0" }, ], }, ], }, { name: "Villa 2", status: "Excellent", totalCost: "SAR 0", rooms: [ { room: "Living Room", items: [ { name: "TV", status: "Good", cost: "SAR 0" }, { name: "Curtains", status: "Good", cost: "SAR 0" }, ], }, ], }, ];
-
-const getStatusColor = (status) => { switch (status) { case "Good": return "bg-green-500/20 text-green-300 border-green-500/30"; case "Repair": return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"; case "Replace": return "bg-red-500/20 text-red-300 border-red-500/30"; default: return "bg-gray-500/20 text-gray-300 border-gray-500/30"; } };
-
-return ( <div className="min-h-screen bg-zinc-950 text-white p-6"> <div className="max-w-6xl mx-auto"> <div className="mb-8"> <h1 className="text-4xl font-bold mb-2">Villa Inspection Dashboard</h1> <p className="text-zinc-400 text-lg"> Interactive maintenance and furniture tracking system </p> </div>
-
-<div className="grid md:grid-cols-2 gap-6">
-      {villas.map((villa, index) => (
-        <div
-          key={index}
-          className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className="text-2xl font-semibold">{villa.name}</h2>
-              <p className="text-zinc-400">Total Estimated Cost</p>
-            </div>
-
-            <div className="text-right">
-              <div className="text-xl font-bold text-cyan-400">
-                {villa.totalCost}
-              </div>
-              <div className="text-sm text-zinc-500">Maintenance</div>
-            </div>
-          </div>
-
-          <div className="mb-4 inline-flex px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-sm">
-            {villa.status}
-          </div>
-
-          <div className="space-y-5">
-            {villa.rooms.map((room, roomIndex) => (
-              <div
-                key={roomIndex}
-                className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800"
-              >
-                <h3 className="text-lg font-semibold mb-4 text-cyan-300">
-                  {room.room}
-                </h3>
-
-                <div className="space-y-3">
-                  {room.items.map((item, itemIndex) => (
-                    <div
-                      key={itemIndex}
-                      className="flex items-center justify-between bg-zinc-900 rounded-xl p-3"
-                    >
-                      <div>
-                        <div className="font-medium">{item.name}</div>
-                        <div className="text-sm text-zinc-500">
-                          Estimated Cost: {item.cost}
-                        </div>
-                      </div>
-
-                      <div
-                        className={`px-3 py-1 rounded-full text-sm border ${getStatusColor(
-                          item.status
-                        )}`}
-                      >
-                        {item.status}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 flex gap-3">
-            <button className="flex-1 bg-cyan-500 hover:bg-cyan-400 transition-all text-black font-semibold py-3 rounded-2xl">
-              Open Details
-            </button>
-
-            <button className="px-5 bg-zinc-800 hover:bg-zinc-700 transition-all rounded-2xl">
-              Export
-            </button>
-          </div>
-        </div>
-      ))}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Villa Inspection Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #09090b;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+    button,
+    input {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    /* HEADER */
+    header {
+      border-bottom: 1px solid #27272a;
+      background: #111113;
+      padding: 28px 20px;
+    }
+    .header-content {
+      max-width: 1250px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .eyebrow {
+      color: #22d3ee;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #a1a1aa;
+      font-size: 15px;
+    }
+    .print-btn {
+      background: #22d3ee;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      padding: 13px 20px;
+      border-radius: 12px;
+      transition: 0.2s;
+    }
+    .print-btn:hover {
+      background: #67e8f9;
+      transform: translateY(-1px);
+    }
+    /* MAIN */
+    main {
+      max-width: 1250px;
+      margin: auto;
+      padding: 30px 20px 60px;
+    }
+    /* STAT CARDS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+    .stat-card {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .stat-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .stat-label {
+      color: #71717a;
+      font-size: 13px;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .green {
+      color: #4ade80;
+    }
+    .yellow {
+      color: #facc15;
+    }
+    .red {
+      color: #f87171;
+    }
+    .cyan {
+      color: #22d3ee;
+    }
+    /* SEARCH */
+    .toolbar {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 18px;
+      padding: 15px;
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search {
+      flex: 1;
+      min-width: 220px;
+      background: #09090b;
+      color: white;
+      border: 1px solid #3f3f46;
+      border-radius: 11px;
+      padding: 12px 15px;
+      outline: none;
+    }
+    .search:focus {
+      border-color: #22d3ee;
+    }
+    .filter {
+      background: #09090b;
+      color: #d4d4d8;
+      border: 1px solid #3f3f46;
+      border-radius: 11px;
+      padding: 10px 15px;
+      transition: 0.2s;
+    }
+    .filter:hover {
+      border-color: #71717a;
+    }
+    .filter.active {
+      background: #22d3ee;
+      color: #000;
+      border-color: #22d3ee;
+      font-weight: bold;
+    }
+    /* VILLA GRID */
+    .villa-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .villa-card {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    }
+    .villa-header {
+      padding: 23px;
+      border-bottom: 1px solid #27272a;
+    }
+    .villa-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    .villa-name {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .villa-type {
+      color: #71717a;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+    .villa-cost-label {
+      color: #71717a;
+      font-size: 11px;
+      text-align: right;
+    }
+    .villa-cost {
+      color: #22d3ee;
+      font-size: 19px;
+      font-weight: bold;
+      margin-top: 3px;
+      text-align: right;
+    }
+    .status-pill {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 6px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      border: 1px solid;
+    }
+    .status-excellent {
+      color: #4ade80;
+      background: rgba(34,197,94,0.08);
+      border-color: rgba(34,197,94,0.25);
+    }
+    .status-attention {
+      color: #facc15;
+      background: rgba(234,179,8,0.08);
+      border-color: rgba(234,179,8,0.25);
+    }
+    .villa-mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 17px;
+    }
+    .mini-stat {
+      background: #09090b;
+      border: 1px solid #27272a;
+      border-radius: 11px;
+      padding: 10px;
+    }
+    .mini-label {
+      color: #71717a;
+      font-size: 11px;
+    }
+    .mini-value {
+      font-weight: bold;
+      margin-top: 4px;
+    }
+    /* ROOMS */
+    .villa-body {
+      padding: 23px;
+    }
+    .room {
+      background: #09090b;
+      border: 1px solid #27272a;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    .room-title {
+      color: #67e8f9;
+      font-weight: bold;
+      padding: 13px 15px;
+      border-bottom: 1px solid #27272a;
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 14px 15px;
+      border-bottom: 1px solid #1f1f22;
+    }
+    .item:last-child {
+      border-bottom: none;
+    }
+    .item-name {
+      font-weight: 500;
+    }
+    .item-cost {
+      color: #71717a;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .item-status {
+      white-space: nowrap;
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: 1px solid;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .item-good {
+      color: #4ade80;
+      background: rgba(34,197,94,0.08);
+      border-color: rgba(34,197,94,0.25);
+    }
+    .item-repair {
+      color: #facc15;
+      background: rgba(234,179,8,0.08);
+      border-color: rgba(234,179,8,0.25);
+    }
+    .item-replace {
+      color: #f87171;
+      background: rgba(239,68,68,0.08);
+      border-color: rgba(239,68,68,0.25);
+    }
+    /* BUTTONS */
+    .villa-actions {
+      display: flex;
+      gap: 10px;
+      padding: 0 23px 23px;
+    }
+    .details-btn {
+      flex: 1;
+      background: #22d3ee;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+    .details-btn:hover {
+      background: #67e8f9;
+    }
+    .export-btn {
+      background: #27272a;
+      color: white;
+      border: 1px solid #3f3f46;
+      padding: 12px 18px;
+      border-radius: 12px;
+    }
+    .export-btn:hover {
+      background: #3f3f46;
+    }
+    /* FEATURES */
+    .features {
+      margin-top: 35px;
+    }
+    .features h2 {
+      margin-bottom: 15px;
+      font-size: 23px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+    .feature {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .feature-title {
+      font-weight: bold;
+    }
+    .feature-description {
+      color: #71717a;
+      font-size: 13px;
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-box {
+      background: #18181b;
+      border: 1px solid #3f3f46;
+      border-radius: 22px;
+      max-width: 650px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      padding: 22px;
+      border-bottom: 1px solid #27272a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: #27272a;
+      color: white;
+      font-size: 18px;
+    }
+    .close-btn:hover {
+      background: #3f3f46;
+    }
+    .modal-body {
+      padding: 22px;
+    }
+    .modal-room {
+      margin-bottom: 20px;
+    }
+    .modal-room h3 {
+      color: #67e8f9;
+      margin-bottom: 8px;
+    }
+    .modal-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px;
+      background: #09090b;
+      border-radius: 10px;
+      margin-bottom: 5px;
+    }
+    /* EMPTY */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px;
+      color: #71717a;
+      background: #18181b;
+      border-radius: 20px;
+      border: 1px solid #27272a;
+    }
+    /* RESPONSIVE */
+    @media (max-width: 950px) {
+      .stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .villa-grid {
+        grid-template-columns: 1fr;
+      }
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 650px) {
+      header {
+        padding: 22px 15px;
+      }
+      main {
+        padding: 22px 15px 40px;
+      }
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      h1 {
+        font-size: 28px;
+      }
+      .print-btn {
+        width: 100%;
+      }
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .villa-title-row {
+        flex-direction: column;
+      }
+      .villa-cost,
+      .villa-cost-label {
+        text-align: left;
+      }
+      .item {
+        align-items: flex-start;
+      }
+    }
+    /* PRINT */
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+      header {
+        background: white;
+        color: black;
+      }
+      .toolbar,
+      .villa-actions,
+      .features,
+      .print-btn {
+        display: none;
+      }
+      .villa-grid {
+        grid-template-columns: 1fr;
+      }
+      .villa-card,
+      .stat-card,
+      .room {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-content">
+    <div>
+      <div class="eyebrow">Property Management</div>
+      <h1>Villa Inspection Dashboard</h1>
+      <p class="subtitle">
+        Furniture, maintenance and cost tracking system
+      </p>
     </div>
-
-    <div className="mt-10 bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-      <h2 className="text-2xl font-bold mb-4">Future Features</h2>
-
-      <div className="grid md:grid-cols-3 gap-4 text-zinc-300">
-        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
-          📷 Upload item photos
+    <button class="print-btn" onclick="window.print()">
+      🖨 Print Report
+    </button>
+  </div>
+</header>
+<main>
+  <!-- STATISTICS -->
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-icon">🏠</div>
+      <div class="stat-label">Total Villas</div>
+      <div class="stat-value" id="totalVillas">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-label">Total Items</div>
+      <div class="stat-value" id="totalItems">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✓</div>
+      <div class="stat-label">Good</div>
+      <div class="stat-value green" id="goodItems">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-label">Needs Repair</div>
+      <div class="stat-value yellow" id="repairItems">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-label">Estimated Cost</div>
+      <div class="stat-value cyan" id="totalCost">SAR 0</div>
+    </div>
+  </section>
+  <!-- SEARCH AND FILTER -->
+  <section class="toolbar">
+    <input
+      id="search"
+      class="search"
+      type="text"
+      placeholder="🔎 Search villa or location..."
+      oninput="renderVillas()"
+    />
+    <button class="filter active" onclick="setFilter('All', this)">
+      All
+    </button>
+    <button class="filter" onclick="setFilter('Good', this)">
+      ✓ Good
+    </button>
+    <button class="filter" onclick="setFilter('Repair', this)">
+      🔧 Repair
+    </button>
+    <button class="filter" onclick="setFilter('Replace', this)">
+      ⚠ Replace
+    </button>
+  </section>
+  <!-- VILLAS -->
+  <section id="villaGrid" class="villa-grid"></section>
+  <!-- FEATURES -->
+  <section class="features">
+    <h2>System Features</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon">📷</div>
+        <div class="feature-title">Item Photos</div>
+        <div class="feature-description">
+          Upload and manage photos of furniture and equipment.
         </div>
-
-        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
-          👨‍🔧 Maintenance tracking
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔧</div>
+        <div class="feature-title">Maintenance</div>
+        <div class="feature-description">
+          Track repairs, replacements and maintenance work.
         </div>
-
-        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
-          📄 PDF reports for management
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📄</div>
+        <div class="feature-title">PDF Reports</div>
+        <div class="feature-description">
+          Generate professional reports for management.
         </div>
-
-        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
-          📱 Mobile-friendly dashboard
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobile Friendly</div>
+        <div class="feature-description">
+          Designed to work on phones, tablets and computers.
         </div>
-
-        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
-          💰 Cost calculation system
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Cost Tracking</div>
+        <div class="feature-description">
+          Automatically calculate estimated maintenance costs.
         </div>
-
-        <div className="bg-zinc-950 rounded-2xl p-4 border border-zinc-800">
-          ☁️ Online cloud database
+      </div>
+      <div class="feature">
+        <div class="feature-icon">☁️</div>
+        <div class="feature-title">Cloud Database</div>
+        <div class="feature-description">
+          Ready for future online database integration.
         </div>
       </div>
     </div>
+  </section>
+</main>
+<!-- DETAILS MODAL -->
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h2 id="modalTitle"></h2>
+        <p id="modalSubtitle" class="subtitle"></p>
+      </div>
+      <button class="close-btn" onclick="hideModal()">
+        ✕
+      </button>
+    </div>
+    <div id="modalBody" class="modal-body"></div>
   </div>
 </div>
-
-); }
+<script>
+  /* ============================
+     VILLA DATA
+  ============================ */
+  const villas = [
+    {
+      id: 1,
+      name: "Villa 1",
+      type: "Executive Villa",
+      rooms: [
+        {
+          name: "Bedroom",
+          items: [
+            {
+              name: "Bed",
+              status: "Good",
+              cost: 0
+            },
+            {
+              name: "TV",
+              status: "Replace",
+              cost: 1200
+            },
+            {
+              name: "AC",
+              status: "Repair",
+              cost: 800
+            }
+          ]
+        },
+        {
+          name: "Hall",
+          items: [
+            {
+              name: "Sofa",
+              status: "Replace",
+              cost: 2000
+            },
+            {
+              name: "Table",
+              status: "Good",
+              cost: 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: "Villa 2",
+      type: "Junior Villa",
+      rooms: [
+        {
+          name: "Living Room",
+          items: [
+            {
+              name: "TV",
+              status: "Good",
+              cost: 0
+            },
+            {
+              name: "Curtains",
+              status: "Good",
+              cost: 0
+            }
+          ]
+        }
+      ]
+    }
+  ];
+  let currentFilter = "All";
+  /* ============================
+     HELPERS
+  ============================ */
+  function formatSAR(number) {
+    return "SAR " + number.toLocaleString("en-US");
+  }
+  function getItems(villa) {
+    return villa.rooms.flatMap(room => room.items);
+  }
+  function getStats(villa) {
+    const items = getItems(villa);
+    return {
+      total: items.length,
+      good: items.filter(item => item.status === "Good").length,
+      repair: items.filter(item => item.status === "Repair").length,
+      replace: items.filter(item => item.status === "Replace").length,
+      cost: items.reduce(
+        (total, item) => total + item.cost,
+        0
+      )
+    };
+  }
+  function getStatusClass(status) {
+    if (status === "Good") {
+      return "item-good";
+    }
+    if (status === "Repair") {
+      return "item-repair";
+    }
+    if (status === "Replace") {
+      return "item-replace";
+    }
+    return "";
+  }
+  /* ============================
+     DASHBOARD STATISTICS
+  ============================ */
+  function updateDashboardStats() {
+    let totalItems = 0;
+    let good = 0;
+    let repair = 0;
+    let replace = 0;
+    let cost = 0;
+    villas.forEach(villa => {
+      const stats = getStats(villa);
+      totalItems += stats.total;
+      good += stats.good;
+      repair += stats.repair;
+      replace += stats.replace;
+      cost += stats.cost;
+    });
+    document.getElementById("totalVillas").textContent =
+      villas.length;
+    document.getElementById("totalItems").textContent =
+      totalItems;
+    document.getElementById("goodItems").textContent =
+      good;
+    document.getElementById("repairItems").textContent =
+      repair;
+    document.getElementById("totalCost").textContent =
+      formatSAR(cost);
+  }
+  /* ============================
+     FILTER
+  ============================ */
+  function setFilter(filter, button) {
+    currentFilter = filter;
+    document
+      .querySelectorAll(".filter")
+      .forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+    renderVillas();
+  }
+  /* ============================
+     RENDER VILLAS
+  ============================ */
+  function renderVillas() {
+    const grid = document.getElementById("villaGrid");
+    const searchValue =
+      document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+    const filtered = villas.filter(villa => {
+      const stats = getStats(villa);
+      const searchMatch =
+        villa.name.toLowerCase().includes(searchValue) ||
+        villa.type.toLowerCase().includes(searchValue);
+      let filterMatch = true;
+      if (currentFilter === "Good") {
+        filterMatch = stats.good > 0;
+      }
+      if (currentFilter === "Repair") {
+        filterMatch = stats.repair > 0;
+      }
+      if (currentFilter === "Replace") {
+        filterMatch = stats.replace > 0;
+      }
+      return searchMatch && filterMatch;
+    });
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div class="empty">
+          <div style="font-size:35px;margin-bottom:10px;">🔎</div>
+          <strong>No villas found</strong>
+          <p style="margin-top:7px;">
+            Try another search or filter.
+          </p>
+        </div>
+      `;
+      return;
+    }
+    grid.innerHTML = filtered.map(villa => {
+      const stats = getStats(villa);
+      const needsAttention =
+        stats.repair > 0 ||
+        stats.replace > 0;
+      const roomsHTML = villa.rooms.map(room => {
+        const itemsHTML = room.items.map(item => {
+          return `
+            <div class="item">
+              <div>
+                <div class="item-name">
+                  ${item.name}
+                </div>
+                <div class="item-cost">
+                  Estimated Cost: ${formatSAR(item.cost)}
+                </div>
+              </div>
+              <span class="item-status ${getStatusClass(item.status)}">
+                ${item.status}
+              </span>
+            </div>
+          `;
+        }).join("");
+        return `
+          <div class="room">
+            <div class="room-title">
+              ${room.name}
+            </div>
+            ${itemsHTML}
+          </div>
+        `;
+      }).join("");
+      return `
+        <article class="villa-card">
+          <div class="villa-header">
+            <div class="villa-title-row">
+              <div>
+                <div class="villa-name">
+                  ${villa.name}
+                </div>
+                <div class="villa-type">
+                  ${villa.type}
+                </div>
+              </div>
+              <div>
+                <div class="villa-cost-label">
+                  ESTIMATED COST
+                </div>
+                <div class="villa-cost">
+                  ${formatSAR(stats.cost)}
+                </div>
+              </div>
+            </div>
+            <span class="status-pill ${
+              needsAttention
+                ? "status-attention"
+                : "status-excellent"
+            }">
+              ${
+                needsAttention
+                  ? "Needs Attention"
+                  : "Excellent"
+              }
+            </span>
+            <div class="villa-mini-stats">
+              <div class="mini-stat">
+                <div class="mini-label">
+                  ITEMS
+                </div>
+                <div class="mini-value">
+                  ${stats.total}
+                </div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-label">
+                  REPAIR
+                </div>
+                <div class="mini-value yellow">
+                  ${stats.repair}
+                </div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-label">
+                  REPLACE
+                </div>
+                <div class="mini-value red">
+                  ${stats.replace}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="villa-body">
+            ${roomsHTML}
+          </div>
+          <div class="villa-actions">
+            <button
+              class="details-btn"
+              onclick="showDetails(${villa.id})"
+            >
+              Open Details
+            </button>
+            <button
+              class="export-btn"
+              onclick="exportVilla(${villa.id})"
+            >
+              Export
+            </button>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+  /* ============================
+     DETAILS MODAL
+  ============================ */
+  function showDetails(id) {
+    const villa =
+      villas.find(villa => villa.id === id);
+    if (!villa) return;
+    const stats = getStats(villa);
+    document.getElementById("modalTitle").textContent =
+      villa.name;
+    document.getElementById("modalSubtitle").textContent =
+      `${villa.type} • ${formatSAR(stats.cost)} estimated cost`;
+    document.getElementById("modalBody").innerHTML =
+      villa.rooms.map(room => {
+        return `
+          <div class="modal-room">
+            <h3>
+              ${room.name}
+            </h3>
+            ${room.items.map(item => {
+              return `
+                <div class="modal-item">
+                  <span>
+                    ${item.name}
+                  </span>
+                  <span class="${getStatusClass(item.status)}"
+                        style="padding:5px 9px;border-radius:15px;font-size:11px;">
+                    ${item.status}
+                  </span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }).join("");
+    document
+      .getElementById("modal")
+      .classList.add("show");
+  }
+  function hideModal() {
+    document
+      .getElementById("modal")
+      .classList.remove("show");
+  }
+  function closeModal(event) {
+    if (event.target.id === "modal") {
+      hideModal();
+    }
+  }
+  /* ============================
+     EXPORT
+  ============================ */
+  function exportVilla(id) {
+    const villa =
+      villas.find(villa => villa.id === id);
+    if (!villa) return;
+    const stats = getStats(villa);
+    let report =
+      `${villa.name} - Villa Inspection Report\n`;
+    report +=
+      `====================================\n\n`;
+    report +=
+      `Type: ${villa.type}\n`;
+    report +=
+      `Total Items: ${stats.total}\n`;
+    report +=
+      `Good: ${stats.good}\n`;
+    report +=
+      `Repair: ${stats.repair}\n`;
+    report +=
+      `Replace: ${stats.replace}\n`;
+    report +=
+      `Estimated Cost: ${formatSAR(stats.cost)}\n\n`;
+    villa.rooms.forEach(room => {
+      report +=
+        `--- ${room.name} ---\n`;
+      room.items.forEach(item => {
+        report +=
+          `${item.name}: ${item.status} | ${formatSAR(item.cost)}\n`;
+      });
+      report += "\n";
+    });
+    const blob =
+      new Blob([report], {
+        type: "text/plain"
+      });
+    const url =
+      URL.createObjectURL(blob);
+    const link =
+      document.createElement("a");
+    link.href = url;
+    link.download =
+      `${villa.name.replaceAll(" ", "_")}_Report.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+  /* ============================
+     START
+  ============================ */
+  updateDashboardStats();
+  renderVillas();
+</script>
+</body>
+</html>
